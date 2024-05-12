@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import BitsolLogo from '../public/Logo-White-Large.png'
-import Image from "next/image";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body >
+      <ToastContainer />
  
       
       {children}

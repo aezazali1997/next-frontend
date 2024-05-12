@@ -1,12 +1,12 @@
 import React from 'react'
 import WrapperLayout from '../components/WrapperLayout';
 
-const Users = () => {
+const Organizations = () => {
   return (
     <div>
   <WrapperLayout />
-  
+
     </div>
   )
 }
-export default Users;
+export default Organizations;
