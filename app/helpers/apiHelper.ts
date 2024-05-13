@@ -1,4 +1,14 @@
 export class ApiCaller {
+  static getHeaders = () => {
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+  };
+  static bodyParser = (values) => {
+    return JSON.stringify(values);
+  };
+
   static loginHandler = async (values) => {
     let res = await fetch("http://localhost:3001/auth/login", {
       body: this.bodyParser({
@@ -14,39 +24,48 @@ export class ApiCaller {
     let tokenData = await res.json();
     return tokenData;
   };
-  static registerHandler = async (values) =>{
+  static getUserList = async (values) => {
+    let res = await fetch("http://localhost:3001/user", {
+      method: "GET",
+      headers: this.getHeaders(),
+    });
+    if (res.status === 404) {
+      throw new Error(res.statusText);
+    }
+    let list = await res.json();
+    return list;
+  };
+  static registerHandler = async (values) => {
     let res = await fetch("http://localhost:3001/auth/register", {
       body: this.bodyParser({
         name: values.name,
         email: values.email,
-        password:values.password,
-        role:'user',
-        organizationId:"663f93034fd782466e3abed9",
-        addresses:[
+        password: values.password,
+        role: "user",
+        organizationId: "663f93034fd782466e3abed9",
+        addresses: [
           {
-          addressLine1:"",
-          addressLine2:"",
-          state:"",
-          city:"",
-          country:"",
-          role:"",
-          shipping:"",
-          phoneNo:"",
-          }
-        ]
-
-
+            addressLine1: "",
+            addressLine2: "",
+            state: "",
+            city: "",
+            country: "",
+            role: "",
+            shipping: "",
+            phoneNo: "",
+          },
+        ],
       }),
       method: "POST",
       headers: this.getHeaders(),
-    })
+    });
     if (res.status !== 201) {
       throw new Error(res.statusText);
     }
-    return
+    return;
   };
-  static  getUserInfo =async (id:string)=>{
-     let res = await fetch(`http://localhost:3001/user/${id}`, {
+  static getUserInfo = async (id: string) => {
+    let res = await fetch(`http://localhost:3001/user/${id}`, {
       method: "GET",
       headers: this.getHeaders(),
     });
@@ -55,16 +74,15 @@ export class ApiCaller {
     }
     let userData = await res.json();
     return userData;
-  }
-
-
-  static getHeaders = () => {
-    return {
-      "Content-Type": "application/json",
-      "Authorization":`Bearer ${localStorage.getItem('token')}`
-    };
   };
-  static bodyParser = (values) => {
-    return JSON.stringify(values);
+  static removeUserInfo = async (id: string) => {
+    let res = await fetch(`http://localhost:3001/user/${id}`, {
+      method: "DELETE",
+      headers: this.getHeaders(),
+    });
+    if (res.status === 404) {
+      throw new Error(res.statusText);
+    }
+    return;
   };
 }

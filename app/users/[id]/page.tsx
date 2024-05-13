@@ -25,7 +25,7 @@ getUser();
   return (
     <div>
       <WrapperLayout />
-      {
+      { userData &&
         <div className='flex justify-center items-center'>
         <div className='w-[700px] rounded-md p-4 mt-16 bg-gray-100 flex flex-col gap-y-4'>
         <div className='flex justify-between'>
@@ -76,6 +76,16 @@ getUser();
         <label htmlFor="phone">Phone No.</label>
         <span>{userData?.addresses[0].phoneNo}</span>
         </div>
+         <div className='flex justify-between'>
+        <label htmlFor="createdAt">Created At</label>
+        <span>{userData?.createdAt}</span>
+        </div>
+
+        <div className='flex justify-between'>
+        <label htmlFor="updatedAt">Updated At</label>
+        <span>{userData?.updatedAt}</span>
+        </div>
+
 
 
         </div>

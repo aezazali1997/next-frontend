@@ -30,6 +30,16 @@ export default function ButtonAppBar({drawer,setDrawer,auth}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleProfileShow = ()=>{
+    setAnchorEl(null);
+    const token = localStorage.getItem('token');
+    const arrayTokens = token?.split('.');
+    const tokenPayload = JSON.parse(atob(arrayTokens[1]));
+    router.push(`/users/${tokenPayload.sub}`)
+
+
+
+  }
   const handleLogout = ()=>{
     localStorage.removeItem('token')
     localStorage.removeItem('role');
@@ -80,7 +90,7 @@ export default function ButtonAppBar({drawer,setDrawer,auth}) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleProfileShow}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>

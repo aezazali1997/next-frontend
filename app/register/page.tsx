@@ -3,7 +3,7 @@ import Image from "next/image";
 import BitsolLogo from '../../public/Logo-White-Large.png'
  import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Link from "next/link";
-import { initialValues, registerSubmitHandler, registerValidator } from "../helpers/registerHelper";
+import { initialValues, registerSubmitHandler, registerValidator } from "../helpers/registerFormHelper";
 import {useRouter} from 'next/navigation'
 const Register = () => {
   const router = useRouter();
