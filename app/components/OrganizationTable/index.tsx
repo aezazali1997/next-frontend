@@ -1,3 +1,5 @@
+
+
 'use client'
 import { ApiCaller } from '@/app/helpers/apiHelper'
 import React,{useState,useEffect} from 'react';
@@ -10,16 +12,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableVirtuoso, TableComponents } from 'react-virtuoso';
 import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import {Address,ColumnData,Data,columns} from './types'
 import {useRouter} from 'next/navigation'
 import { NotifyType, notify } from '@/app/helpers/toast';
 
-  const token = localStorage.getItem('token');
-    const arrayTokens = token?.split('.');
-    const tokenPayload = JSON.parse(atob(arrayTokens[1]));
+
 
 
 const VirtuosoTableComponents: TableComponents<Data> = {
@@ -57,20 +54,6 @@ function fixedHeaderContent() {
 }
 
 function rowContent(_index: number, row: Data) {
-  const router = useRouter();
-
-
-  const deleteUser= async(id:string)=>{
-    try {
-    await ApiCaller.removeUserInfo(id);
-    window.location.reload();
-    } catch (error) {
-    notify(`User Deleted Failed : ${error.message}`,NotifyType.ERROR)
-
-      
-    }
-
-  }
 
   return (
     <React.Fragment>
@@ -78,34 +61,22 @@ function rowContent(_index: number, row: Data) {
         <TableCell
           key={column.dataKey}
         >
-          {row[column.dataKey] ||row.addresses[0][column.dataKey] }
-          {
-              column.dataKey==='action' && localStorage && <>
-          <IconButton disabled={tokenPayload.sub===row._id || localStorage.getItem('role') === 'user'  } onClick={()=>{deleteUser(row._id)}}  >
-          <DeleteIcon className={`${tokenPayload.sub===row._id || localStorage.getItem('role') === 'user' ? 'text-gray-400' : 'text-red-600'} `} />
-          </IconButton>
-          <IconButton disabled={tokenPayload.sub!==row._id && localStorage.getItem('role') === 'user'} onClick={()=> router.push(`/users/${row._id}/Edit`)}  >
-          <EditIcon className={`${tokenPayload.sub!==row._id && localStorage.getItem('role') === 'user'  ? 'text-gray-400' : 'text-primary'}`} />
-          </IconButton>
-          <IconButton onClick={()=> router.push(`/users/${row._id}`)}  >
-          <RemoveRedEyeIcon className='text-primary' />
-          </IconButton>
-              </>
-          }
+          {row[column.dataKey] }
+         
         </TableCell>
       ))}
     </React.Fragment>
   );
 }
 
-export default function UserTable() {
+export default function OrganizationTable() {
 
-   const [userList,setUserList]= useState([])
+   const [organizations,setOrganizations]= useState([])
 useEffect(()=>{
 const getList = async()=>{
-  const list = await ApiCaller.getUserList();
+  const list = await ApiCaller.getOrganizationsList();
   if(Array.isArray(list)){
-    setUserList(list);
+    setOrganizations(list);
   }
 
 }
@@ -115,7 +86,7 @@ getList();
   return (
     <Paper style={{ height: '800px', width: '80%',margin:'auto',marginTop:'24px' }}>
       <TableVirtuoso
-        data={userList}
+        data={organizations}
         components={VirtuosoTableComponents}
         fixedHeaderContent={fixedHeaderContent}
         itemContent={rowContent}

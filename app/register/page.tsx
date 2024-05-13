@@ -5,8 +5,38 @@ import BitsolLogo from '../../public/Logo-White-Large.png'
 import Link from "next/link";
 import { initialValues, registerSubmitHandler, registerValidator } from "../helpers/registerFormHelper";
 import {useRouter} from 'next/navigation'
+import { useEffect, useState } from "react";
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CustomSelect from "../components/Select";
+import { ApiCaller } from "../helpers/apiHelper";
+
+
+
 const Register = () => {
   const router = useRouter();
+  const [organizations,setOrganizations]=useState([]);
+
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
+  };
+
+  useEffect(()=>{
+    const getOrganizationsList = async()=>{
+      let data = await ApiCaller.getPublicOrganizations();
+      if(data && data.length>0){
+        let newArray = data.map((obj)=> {
+          return {label:obj.title,value:obj._id}
+          })
+        setOrganizations(newArray)
+      }
+
+
+    }
+    getOrganizationsList();
+    
+  },[])
 
   return (
   
@@ -54,6 +84,14 @@ const Register = () => {
              <Field type="number" name="phoneNo" placeholder="Phone  number" className={`font-serif p-2 border-1 w-full border  rounded-sm border-gray-300`} />
            </div>
            <div>
+           <Field
+        className="custom-select"
+        name="organizationId"
+        options={organizations}
+        component={CustomSelect}
+        placeholder="Select Organization"
+        isMulti={false}
+      />
 
 
            </div>
