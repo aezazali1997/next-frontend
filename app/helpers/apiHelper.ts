@@ -85,4 +85,15 @@ export class ApiCaller {
     }
     return;
   };
+  static updateUserInfo = async (id: string, formData) => {
+    let res = await fetch(`http://localhost:3001/user/${id}`, {
+      body: this.bodyParser(formData),
+      method: "PATCH",
+      headers: this.getHeaders(),
+    });
+    if (res.status !== 200) {
+      throw new Error(res.statusText);
+    }
+    return;
+  };
 }
